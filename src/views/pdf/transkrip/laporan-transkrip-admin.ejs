@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Transkrip Nilai Siswa</title>
+  <style>
+    <%- cssContent %>
+  </style>
+</head>
+
+<body>
+  <div class="page-container">
+    <!-- Identitas Siswa -->
+    <%- include('../partials/identitas-siswa', { siswa }) %>
+
+      <!-- Riwayat per Tahun Ajaran & Semester -->
+      <% if (riwayat_nilai && riwayat_nilai.length) { %>
+        <% riwayat_nilai.forEach(function(item, index) { %>
+          <%- include('../partials/semester-section', { item, index }) %>
+            <% }) %>
+              <% } else { %>
+                <p class="text-center mt-4">Belum ada data nilai untuk siswa ini.</p>
+                <% } %>
+
+                  <!-- Tanda Tangan -->
+                  <br>
+                  <%- include('../partials/ttd', { siswa, tanggal_cetak }) %>
+  </div>
+</body>
+
+</html>

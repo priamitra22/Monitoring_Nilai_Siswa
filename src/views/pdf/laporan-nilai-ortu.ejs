@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Laporan Nilai Siswa</title>
+  <style>
+    <%- cssContent %>
+  </style>
+</head>
+
+<body>
+  <div class="page-container">
+    <!-- Identitas Siswa -->
+    <div class="identitas-wrapper">
+      <table class="identitas-table">
+        <tr>
+          <td width="15%"><span class="identitas-label">Nama Lengkap</span></td>
+          <td width="2%" class="identitas-separator">:</td>
+          <td width="38%" class="identitas-value">
+            <%= siswa.nama %>
+          </td>
+
+          <td width="15%"><span class="identitas-label">Tahun Ajaran</span></td>
+          <td width="2%" class="identitas-separator">:</td>
+          <td width="28%" class="identitas-value">
+            <%= tahunAjaran %> - Semester <%= semester %>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="identitas-label">NISN</span></td>
+          <td class="identitas-separator">:</td>
+          <td class="identitas-value">
+            <%= siswa.nisn %>
+          </td>
+
+          <td><span class="identitas-label">Kelas</span></td>
+          <td class="identitas-separator">:</td>
+          <td class="identitas-value">
+            <%= kelas %>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="identitas-label">Wali Kelas</span></td>
+          <td class="identitas-separator">:</td>
+          <td class="identitas-value" colspan="4">
+            <%= wali_kelas %>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Section: Nilai Akademik -->
+    <div class="section-wrapper">
+      <div class="section-header">
+        <span class="section-info-label">📚 Nilai Akademik</span>
+      </div>
+      <div class="section-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width: 5%; text-align: center;">No</th>
+              <th style="width: 35%">Mata Pelajaran</th>
+              <th style="width: 20%; text-align: center;">Nilai Akhir</th>
+              <th style="width: 15%; text-align: center;">Predikat</th>
+              <th style="width: 25%">Guru Pengajar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (nilai_akademik && nilai_akademik.length) { %>
+              <% nilai_akademik.forEach(function(nilai, idx) { %>
+                <tr>
+                  <td style="text-align: center">
+                    <%= idx + 1 %>
+                  </td>
+                  <td>
+                    <%= nilai.nama_mapel %>
+                  </td>
+                  <td style="text-align: center; font-weight: bold;">
+                    <%= nilai.nilai_akhir !== null ? nilai.nilai_akhir : '-' %>
+                  </td>
+                  <td style="text-align: center">
+                    <% if (nilai.grade && nilai.grade !== '-') { 
+                      let gradeClass = 'grade-c';
+                      if (nilai.grade === 'A') gradeClass = 'grade-a';
+                      else if (nilai.grade === 'B') gradeClass = 'grade-b';
+                      else if (nilai.grade === 'D' || nilai.grade === 'E') gradeClass = 'grade-d';
+                    %>
+                      <span class="grade-badge <%= gradeClass %>">
+                        <%= nilai.grade %>
+                      </span>
+                    <% } else { %>
+                      -
+                    <% } %>
+                  </td>
+                  <td>
+                    <%= nilai.guru_nama || '-' %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" class="text-center catatan-empty">Belum ada data nilai.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section: Rekap Kehadiran -->
+    <div class="section-wrapper">
+      <div class="section-header">
+        <span class="section-info-label">📅 Rekap Kehadiran</span>
+      </div>
+      <div class="section-content">
+        <div class="absensi-box">
+          <div class="absensi-grid">
+            <div class="absensi-item">
+              <span class="absensi-label">Hadir:</span>
+              <span class="absensi-value" style="color: #15803d;">
+                <%= absensi.hadir || 0 %>
+              </span>
+              <span style="margin-left: 4px">hari</span>
+            </div>
+            <div class="absensi-item">
+              <span class="absensi-label">Sakit:</span>
+              <span class="absensi-value">
+                <%= absensi.sakit || 0 %>
+              </span>
+              <span style="margin-left: 4px">hari</span>
+            </div>
+            <div class="absensi-item">
+              <span class="absensi-label">Izin:</span>
+              <span class="absensi-value">
+                <%= absensi.izin || 0 %>
+              </span>
+              <span style="margin-left: 4px">hari</span>
+            </div>
+            <div class="absensi-item">
+              <span class="absensi-label">Tanpa Keterangan:</span>
+              <span class="absensi-value" style="color: #991b1b;">
+                <%= absensi.alpha || 0 %>
+              </span>
+              <span style="margin-left: 4px">hari</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Catatan Perkembangan -->
+    <% if (catatan_perkembangan && catatan_perkembangan.length) { %>
+      <div class="section-wrapper">
+        <div class="section-header">
+          <span class="section-info-label">📝 Catatan Perkembangan Siswa</span>
+        </div>
+        <div class="section-content">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 5%; text-align: center;">No</th>
+                <th style="width: 12%">Tanggal</th>
+                <th style="width: 15%">Kategori</th>
+                <th style="width: 43%">Catatan</th>
+                <th style="width: 25%">Pembuat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% catatan_perkembangan.forEach(function(catatan, idx) { 
+                const kat = (catatan.kategori || 'netral').toLowerCase();
+              %>
+                <tr>
+                  <td style="text-align: center">
+                    <%= idx + 1 %>
+                  </td>
+                  <td>
+                    <%= catatan.tanggal_formatted %>
+                  </td>
+                  <td>
+                    <span class="badge-kategori <%= kat %>">
+                      <%= catatan.kategori || 'Netral' %>
+                    </span>
+                    <div style="font-size: 8pt; color: #6b7280; margin-top: 2px;">
+                      <%= catatan.jenis || 'Umum' %>
+                    </div>
+                  </td>
+                  <td>
+                    <%= catatan.isi_catatan %>
+                  </td>
+                  <td>
+                    <%= catatan.guru_nama || '-' %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Tanda Tangan -->
+    <div class="ttd-wrapper">
+      <div class="ttd-row">
+        <!-- Kepala Sekolah - KIRI -->
+        <div class="ttd-col">
+          <div class="ttd-role">Mengetahui,<br>Kepala Sekolah</div>
+          <div class="ttd-name" style="margin-top: 70px;">(HJ. NINING KARNINGSIH, S.Pd., SD.)</div>
+          <div class="ttd-nip">NIP. 196563071986102004</div>
+        </div>
+
+        <!-- Wali Kelas - KANAN -->
+        <div class="ttd-col">
+          <div class="ttd-role">Garut, <%= tanggal_cetak %><br>Wali Kelas</div>
+          <div class="ttd-name" style="margin-top: 70px;">
+            <% if (guru && guru.nama) { %>
+              (<%= guru.nama %>)
+            <% } else if (wali_kelas && wali_kelas !== '-') { %>
+              (<%= wali_kelas %>)
+            <% } else { %>
+              ( _________________ )
+            <% } %>
+          </div>
+          <div class="ttd-nip">
+            <% if (guru && guru.nip) { %>
+              NIP. <%= guru.nip %>
+            <% } else { %>
+              NIP. _________________
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
