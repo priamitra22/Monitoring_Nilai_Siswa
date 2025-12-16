@@ -233,7 +233,6 @@ export const getProfileService = async (userId, isTempToken = false) => {
     role: user.role,
     nama: '',
   }
-  e
   switch (user.role) {
     case 'admin':
       responseData.nama = user.nama_lengkap
