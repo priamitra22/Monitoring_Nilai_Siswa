@@ -56,6 +56,49 @@ export const downloadLaporan = async (req, res, next) => {
 
         const laporan = await laporanResmiService.getLaporanByIdService(laporanId, ortuId)
 
+        const namaSiswa = laporan.nama_siswa.replace(/\s+/g, '_')
+        const tahunAjaran = laporan.tahun_ajaran.replace(/\//g, '_')
+        const downloadFilename = `Rapor_${namaSiswa}_${tahunAjaran}_${laporan.semester}_v${laporan.version}.pdf`
+
+        // Check if file is from Cloudinary
+        if (laporan.file_path.includes('cloudinary') || laporan.file_path.includes('res.cloudinary.com')) {
+            try {
+                // Import downloadFromCloudinary dynamically
+                const { downloadFromCloudinary } = await import('../../config/cloudinaryConfig.js')
+
+                // Extract public_id from URL
+                const urlParts = laporan.file_path.split('/upload/')
+                if (urlParts.length < 2) {
+                    throw new Error('Invalid Cloudinary URL format')
+                }
+                const pathAfterUpload = urlParts[1].replace(/^v\d+\//, '')
+
+                const downloadResult = await downloadFromCloudinary(pathAfterUpload)
+
+                if (!downloadResult.success) {
+                    console.error('Cloudinary download failed:', downloadResult.error)
+                    return res.status(404).json({
+                        status: 'error',
+                        message: 'File tidak ditemukan di cloud storage',
+                        data: null,
+                    })
+                }
+
+                res.setHeader('Content-Type', 'application/pdf')
+                res.setHeader('Content-Disposition', `attachment; filename="${downloadFilename}"`)
+
+                return res.send(downloadResult.buffer)
+            } catch (fetchError) {
+                console.error('Error fetching from Cloudinary:', fetchError)
+                return res.status(500).json({
+                    status: 'error',
+                    message: 'Gagal mengunduh file dari cloud storage',
+                    data: null,
+                })
+            }
+        }
+
+        // Local file handling
         const projectRoot = path.join(__dirname, '../../..')
         const filePath = path.join(projectRoot, laporan.file_path)
         if (!fs.existsSync(filePath)) {
@@ -65,10 +108,6 @@ export const downloadLaporan = async (req, res, next) => {
                 data: null,
             })
         }
-
-        const namaSiswa = laporan.nama_siswa.replace(/\s+/g, '_')
-        const tahunAjaran = laporan.tahun_ajaran.replace(/\//g, '_')
-        const downloadFilename = `Rapor_${namaSiswa}_${tahunAjaran}_${laporan.semester}_v${laporan.version}.pdf`
 
         res.setHeader('Content-Type', 'application/pdf')
         res.setHeader('Content-Disposition', `attachment; filename="${downloadFilename}"`)
