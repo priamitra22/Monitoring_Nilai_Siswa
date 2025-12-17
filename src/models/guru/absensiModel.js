@@ -126,6 +126,7 @@ export const getKelasByGuru = (guruId) => {
       SELECT DISTINCT
         k.id as kelas_id,
         k.nama_kelas,
+        k.wali_kelas_id,
         CASE 
           WHEN k.wali_kelas_id = ? THEN 'Wali Kelas'
           ELSE 'Guru Mapel'
