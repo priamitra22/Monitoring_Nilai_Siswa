@@ -13,11 +13,6 @@ const dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS || "",
   database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 10000,
 };
 
 if (useSSL) {
@@ -31,19 +26,39 @@ if (useSSL) {
   }
 }
 
-const pool = mysql.createPool(dbConfig);
+let db;
 
-pool.getConnection((err, connection) => {
-  if (err) {
-    console.error("❌ Database gagal terkoneksi:", err.message);
-    return;
-  }
-  console.log("✅ Database MySQL terkoneksi (Pool)");
-  if (useSSL) {
-    console.log("☁️ Connected to Aiven MySQL Cloud");
-  }
-  connection.release();
-});
+function handleDisconnect() {
+  db = mysql.createConnection(dbConfig);
 
-export default pool;
+  db.connect((err) => {
+    if (err) {
+      console.error("❌ Database gagal terkoneksi:", err.message);
+      setTimeout(handleDisconnect, 2000);
+      return;
+    }
+    console.log("✅ Database MySQL terkoneksi");
+    if (useSSL) {
+      console.log("☁️ Connected to Aiven MySQL Cloud");
+    }
+  });
+
+  db.on('error', (err) => {
+    console.error('Database error:', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST' ||
+      err.code === 'ECONNRESET' ||
+      err.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
+      console.log('🔄 Reconnecting to database...');
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
+
+export default db;
+
+
 
