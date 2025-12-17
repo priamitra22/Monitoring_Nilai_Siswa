@@ -13,6 +13,11 @@ const dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS || "",
   database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 10000,
 };
 
 if (useSSL) {
@@ -23,21 +28,22 @@ if (useSSL) {
       ca: fs.readFileSync(caPath),
       rejectUnauthorized: true
     };
-  } else {
   }
 }
 
-const db = mysql.createConnection(dbConfig);
+const pool = mysql.createPool(dbConfig);
 
-db.connect((err) => {
+pool.getConnection((err, connection) => {
   if (err) {
     console.error("❌ Database gagal terkoneksi:", err.message);
     return;
   }
-  console.log("✅ Database MySQL terkoneksi");
+  console.log("✅ Database MySQL terkoneksi (Pool)");
   if (useSSL) {
     console.log("☁️ Connected to Aiven MySQL Cloud");
   }
+  connection.release();
 });
 
-export default db;
+export default pool;
+
