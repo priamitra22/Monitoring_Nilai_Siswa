@@ -71,12 +71,19 @@ export const downloadLaporanFile = async (req, res) => {
 
     const laporan = result.data
 
-    // Check if file is from Cloudinary
+    // Generate proper filename
+    let downloadFilename = laporan.original_filename
+    if (!downloadFilename || downloadFilename.endsWith('_') || !downloadFilename.endsWith('.pdf')) {
+      const namaSiswa = (laporan.nama_siswa || 'Siswa').replace(/\s+/g, '_')
+      const tahunAjaran = (laporan.tahun_ajaran || '').replace(/\//g, '_')
+      const semester = laporan.semester || ''
+      const version = laporan.version || 1
+      downloadFilename = `Laporan_${namaSiswa}_${tahunAjaran}_${semester}_v${version}.pdf`
+    }
+
     if (laporan.file_path.includes('cloudinary') || laporan.file_path.includes('res.cloudinary.com')) {
       try {
         const { downloadFromCloudinary } = await import('../../config/cloudinaryConfig.js')
-
-        // Extract public_id from URL
         const urlParts = laporan.file_path.split('/upload/')
         if (urlParts.length < 2) {
           throw new Error('Invalid Cloudinary URL format')
@@ -94,7 +101,7 @@ export const downloadLaporanFile = async (req, res) => {
         }
 
         res.setHeader('Content-Type', 'application/pdf')
-        res.setHeader('Content-Disposition', `attachment; filename="${laporan.original_filename}"`)
+        res.setHeader('Content-Disposition', `attachment; filename="${downloadFilename}"`)
 
         return res.send(downloadResult.buffer)
       } catch (fetchError) {
@@ -106,7 +113,6 @@ export const downloadLaporanFile = async (req, res) => {
       }
     }
 
-    // Local file handling
     const filePath = path.join(process.cwd(), laporan.file_path)
 
     if (!fs.existsSync(filePath)) {
@@ -117,7 +123,7 @@ export const downloadLaporanFile = async (req, res) => {
     }
 
     res.setHeader('Content-Type', 'application/pdf')
-    res.setHeader('Content-Disposition', `attachment; filename="${laporan.original_filename}"`)
+    res.setHeader('Content-Disposition', `attachment; filename="${downloadFilename}"`)
 
     const fileStream = fs.createReadStream(filePath)
     fileStream.pipe(res)

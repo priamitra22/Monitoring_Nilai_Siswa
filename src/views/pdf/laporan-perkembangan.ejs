@@ -59,7 +59,7 @@
     <!-- Section: Nilai Akademik -->
     <div class="section-wrapper">
       <div class="section-header">
-        <span class="section-info-label">📚 Nilai Akademik</span>
+        <span class="section-info-label">Nilai Akademik</span>
       </div>
       <div class="section-content">
         <table class="table">
@@ -82,29 +82,26 @@
                     <%= nilai.nama_mapel %>
                   </td>
                   <td style="text-align: center; font-weight: bold;">
-                    <%= nilai.nilai_akhir !== null ? nilai.nilai_akhir : '-' %>
+                    <%= nilai.nilai_akhir !==null ? nilai.nilai_akhir : '-' %>
                   </td>
                   <td style="text-align: center">
-                    <% if (nilai.grade) { 
-                      let gradeClass = 'grade-c';
-                      if (nilai.grade === 'A') gradeClass = 'grade-a';
-                      else if (nilai.grade === 'B') gradeClass = 'grade-b';
-                      else if (nilai.grade === 'D') gradeClass = 'grade-d';
-                    %>
+                    <% if (nilai.grade) { let gradeClass='grade-c' ; if (nilai.grade==='A' ) gradeClass='grade-a' ; else
+                      if (nilai.grade==='B' ) gradeClass='grade-b' ; else if (nilai.grade==='D' ) gradeClass='grade-d' ;
+                      %>
                       <span class="grade-badge <%= gradeClass %>">
                         <%= nilai.grade %>
                       </span>
-                    <% } else { %>
-                      -
-                    <% } %>
+                      <% } else { %>
+                        -
+                        <% } %>
                   </td>
                 </tr>
-              <% }) %>
-            <% } else { %>
-              <tr>
-                <td colspan="4" class="text-center catatan-empty">Belum ada data nilai.</td>
-              </tr>
-            <% } %>
+                <% }) %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="4" class="text-center catatan-empty">Belum ada data nilai.</td>
+                    </tr>
+                    <% } %>
           </tbody>
         </table>
       </div>
@@ -113,7 +110,7 @@
     <!-- Section: Rekap Kehadiran -->
     <div class="section-wrapper">
       <div class="section-header">
-        <span class="section-info-label">📅 Rekap Kehadiran</span>
+        <span class="section-info-label">Rekap Kehadiran</span>
       </div>
       <div class="section-content">
         <div class="absensi-box">
@@ -155,7 +152,7 @@
     <% if (catatan_perkembangan && catatan_perkembangan.length) { %>
       <div class="section-wrapper">
         <div class="section-header">
-          <span class="section-info-label">📝 Catatan Perkembangan Siswa</span>
+          <span class="section-info-label">Catatan Perkembangan Siswa</span>
         </div>
         <div class="section-content">
           <table class="table">
@@ -169,9 +166,8 @@
               </tr>
             </thead>
             <tbody>
-              <% catatan_perkembangan.forEach(function(catatan, idx) { 
-                const kat = (catatan.kategori || '').toLowerCase();
-              %>
+              <% catatan_perkembangan.forEach(function(catatan, idx) { const kat=(catatan.kategori || ''
+                ).toLowerCase(); %>
                 <tr>
                   <td style="text-align: center">
                     <%= idx + 1 %>
@@ -194,48 +190,47 @@
                     <%= catatan.guru_nama || '-' %>
                   </td>
                 </tr>
-              <% }) %>
+                <% }) %>
             </tbody>
           </table>
         </div>
       </div>
-    <% } %>
+      <% } %>
 
-    <!-- Catatan Wali Kelas -->
-    <div class="section-wrapper">
-      <div class="section-header">
-        <span class="section-info-label">💬 Catatan Wali Kelas</span>
-      </div>
-      <div class="section-content">
-        <div class="catatan-wali-box">
-          <div class="catatan-wali-content">
-            <%= catatan_wali_kelas %>
+        <!-- Catatan Wali Kelas -->
+        <div class="section-wrapper">
+          <div class="section-header">
+            <span class="section-info-label">Catatan Wali Kelas</span>
+          </div>
+          <div class="section-content">
+            <div class="catatan-wali-box">
+              <div class="catatan-wali-content">
+                <%= catatan_wali_kelas %>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Tanda Tangan -->
-    <div class="ttd-wrapper">
-      <div class="ttd-row">
-        <!-- Kepala Sekolah - KIRI -->
-        <div class="ttd-col">
-          <div class="ttd-role">Mengetahui,<br>Kepala Sekolah</div>
-          <div class="ttd-name" style="margin-top: 70px;">(HJ. NINING KARNINGSIH, S.Pd., SD.)</div>
-          <div class="ttd-nip">NIP. 196563071986102004</div>
-        </div>
+        <!-- Tanda Tangan -->
+        <div class="ttd-wrapper">
+          <div class="ttd-row">
+            <!-- Kepala Sekolah - KIRI -->
+            <div class="ttd-col">
+              <div class="ttd-role">Mengetahui,<br>Kepala Sekolah</div>
+              <div class="ttd-name" style="margin-top: 70px;">(HJ. NINING KARNINGSIH, S.Pd., SD.)</div>
+              <div class="ttd-nip">NIP. 196563071986102004</div>
+            </div>
 
-        <!-- Wali Kelas - KANAN -->
-        <div class="ttd-col">
-          <div class="ttd-role">Garut, <%= tanggal_cetak %><br>Wali Kelas</div>
-          <div class="ttd-name" style="margin-top: 70px;">(<%= guru.nama %>)</div>
-          <div class="ttd-nip">NIP. <%= guru.nip || '-' %>
+            <!-- Wali Kelas - KANAN -->
+            <div class="ttd-col">
+              <div class="ttd-role">Garut, <%= tanggal_cetak %><br>Wali Kelas</div>
+              <div class="ttd-name" style="margin-top: 70px;">(<%= guru.nama %>)</div>
+              <div class="ttd-nip">NIP. <%= guru.nip || '-' %>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
   </div>
 </body>
 
 </html>
-

@@ -90,8 +90,13 @@ export const getKelasByGuru = (guruId, tahunAjaranId) => {
 export const getLaporanById = (id, guruId) => {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT lr.*
+      SELECT 
+        lr.*,
+        s.nama_lengkap as nama_siswa,
+        ta.tahun as tahun_ajaran
       FROM laporan_resmi lr
+      INNER JOIN siswa s ON lr.siswa_id = s.id
+      INNER JOIN tahun_ajaran ta ON lr.tahun_ajaran_id = ta.id
       INNER JOIN kelas k ON lr.kelas_id = k.id
       INNER JOIN kelas_mapel km ON k.id = km.kelas_id
       WHERE lr.id = ?
