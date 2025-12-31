@@ -71,15 +71,12 @@ export const downloadLaporanFile = async (req, res) => {
 
     const laporan = result.data
 
-    // Generate proper filename
-    let downloadFilename = laporan.original_filename
-    if (!downloadFilename || downloadFilename.endsWith('_') || !downloadFilename.endsWith('.pdf')) {
-      const namaSiswa = (laporan.nama_siswa || 'Siswa').replace(/\s+/g, '_')
-      const tahunAjaran = (laporan.tahun_ajaran || '').replace(/\//g, '_')
-      const semester = laporan.semester || ''
-      const version = laporan.version || 1
-      downloadFilename = `Laporan_${namaSiswa}_${tahunAjaran}_${semester}_v${version}.pdf`
-    }
+    // Always generate proper filename from data
+    const namaSiswa = (laporan.nama_siswa || 'Siswa').replace(/\s+/g, '_')
+    const tahunAjaran = (laporan.tahun_ajaran || '').replace(/\//g, '_')
+    const semester = laporan.semester || ''
+    const version = laporan.version || 1
+    const downloadFilename = `Laporan_Resmi_${namaSiswa}_${tahunAjaran}_${semester}_v${version}.pdf`
 
     if (laporan.file_path.includes('cloudinary') || laporan.file_path.includes('res.cloudinary.com')) {
       try {
