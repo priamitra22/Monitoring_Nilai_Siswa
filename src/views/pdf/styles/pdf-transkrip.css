@@ -72,7 +72,6 @@ h6 {
 
 .semester-section {
   margin-top: 24px;
-  page-break-inside: avoid;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
