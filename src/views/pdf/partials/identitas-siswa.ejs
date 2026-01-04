@@ -7,14 +7,10 @@
         <%= siswa.nama %>
       </td>
 
-      <td width="15%"><span class="identitas-label">Tahun Ajaran</span></td>
+      <td width="15%"><span class="identitas-label">Kelas Saat Ini</span></td>
       <td width="2%" class="identitas-separator">:</td>
       <td width="28%" class="identitas-value">
-        <% if (typeof riwayat_nilai !=='undefined' && riwayat_nilai.length> 0) { %>
-          <%= riwayat_nilai[0].tahun_ajaran %> - Semester <%= riwayat_nilai[0].semester %>
-              <% } else { %>
-                -
-                <% } %>
+        <%= siswa.kelas %>
       </td>
     </tr>
     <tr>
@@ -24,23 +20,10 @@
         <%= siswa.nisn %>
       </td>
 
-      <td><span class="identitas-label">Kelas</span></td>
-      <td class="identitas-separator">:</td>
-      <td class="identitas-value">
-        <%= siswa.kelas %>
-      </td>
-    </tr>
-    <tr>
       <td><span class="identitas-label">Orang Tua/Wali</span></td>
       <td class="identitas-separator">:</td>
       <td class="identitas-value">
         <%= siswa.nama_ortu %>
-      </td>
-
-      <td><span class="identitas-label">Wali Kelas</span></td>
-      <td class="identitas-separator">:</td>
-      <td class="identitas-value">
-        <%= siswa.wali_kelas_nama || '-' %>
       </td>
     </tr>
   </table>

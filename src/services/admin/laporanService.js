@@ -189,53 +189,106 @@ export const generateTranskripPDFService = async (siswaId) => {
       __dirname,
       '../../views/pdf/transkrip/laporan-transkrip-admin.ejs'
     )
-    const cssPath = path.join(__dirname, '../../views/pdf/styles/pdf-laporan.css')
+    const cssPath = path.join(__dirname, '../../views/pdf/styles/pdf-transkrip.css')
     const cssContent = fs.readFileSync(cssPath, 'utf-8')
 
     templateData.cssContent = cssContent
 
     const htmlContent = await ejs.renderFile(templatePath, templateData)
     const headerTemplate = `
-    <style>
-        /* Versi CSS Header yang lebih rapi - sama dengan guru */
-        body { font-family: 'Times New Roman', serif; font-size: 10pt; width: 100%; margin: 0; padding: 0; }
-        .kop-surat { 
-          display: flex; 
-          align-items: center; 
-          border-bottom: 3px solid black; 
+      <style>
+        .header-container {
+          width: 100%;
           padding: 10px 40px;
-          margin: 0;
+          box-sizing: border-box;
+          font-family: 'Times New Roman', serif;
         }
-        .kop-surat img.logo { width: 70px; height: 70px; margin-right: 20px; }
-        .kop-surat .teks-kop { text-align: center; flex-grow: 1; line-height: 1.3; }
-        
-        .kop-surat h2 { font-size: 16pt; margin: 0; font-weight: bold; }
-        .kop-surat h3 { font-size: 14pt; margin: 0; font-weight: bold; }
-        .kop-surat p { font-size: 9pt; margin: 0; }
+        .kop-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 5px;
+        }
+        .kop-logo-cell {
+          width: 100px;
+          vertical-align: middle;
+          text-align: left;
+        }
+        .kop-text-cell {
+          vertical-align: middle;
+          text-align: center;
+          padding-right: 100px;
+        }
+        .kop-logo-img {
+          width: 80px;
+          height: 80px;
+          object-fit: contain;
+        }
+        .judul-dokumen {
+          font-size: 16pt;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: 5px;
+        }
+        .nama-sekolah {
+          font-size: 18pt;
+          font-weight: 900;
+          text-transform: uppercase;
+          margin-bottom: 5px;
+        }
+        .alamat {
+          font-size: 9pt;
+          color: #333;
+        }
+        .kop-separator {
+          border-bottom: 4px double #000;
+          width: 100%;
+          margin-top: 10px;
+        }
       </style>
-      
-      <div class="kop-surat">
-        <img src="data:image/png;base64,${logoBase64}" alt="Logo" class="logo">
-        <div class="teks-kop">
-          <h2>TRANSKRIP NILAI SISWA</h2>
-          <h3>SDN 1 LANGENSARI</h3>
-          <p>Jl. Cipanas, Kp. Korobokan, Cimanganten, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</p>
-        </div>
+      <div class="header-container">
+        <table class="kop-table">
+          <tr>
+            <td class="kop-logo-cell">
+              ${logoBase64 ? `<img src="data:image/png;base64,${logoBase64}" alt="Logo" class="kop-logo-img" />` : ''}
+            </td>
+            <td class="kop-text-cell">
+              <div class="judul-dokumen">TRANSKRIP NILAI SISWA</div>
+              <div class="nama-sekolah">SDN 1 LANGENSARI</div>
+              <div class="alamat">
+                Jl. Cipanas, Kp. Korobokan, Cimanganten, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151
+              </div>
+            </td>
+          </tr>
+        </table>
+        <div class="kop-separator"></div>
       </div>
     `
     const footerTemplate = `
       <style>
-        div { 
+        .footer-container { 
           font-family: 'Times New Roman', serif; 
-          font-size: 9pt; 
+          font-size: 8pt; 
           width: 100%; 
-          text-align: right; 
-          padding: 0 40px;
+          padding: 5px 40px;
           box-sizing: border-box;
+          border-top: 1px solid #d1d5db;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .footer-left {
+          text-align: left;
+          color: #6b7280;
+        }
+        .footer-right {
+          text-align: right;
+          color: #374151;
         }
       </style>
-      <div>
-        Halaman <span class="pageNumber"></span> dari <span class="totalPages"></span>
+      <div class="footer-container">
+        <div class="footer-left">SDN 1 Langensari | Sistem Monitoring Nilai Siswa</div>
+        <div class="footer-right">Halaman <span class="pageNumber"></span> dari <span class="totalPages"></span></div>
       </div>
     `
 
@@ -271,7 +324,7 @@ export const generateTranskripPDFService = async (siswaId) => {
       headerTemplate: headerTemplate,
       footerTemplate: footerTemplate,
       margin: {
-        top: '140px',
+        top: '160px',
         bottom: '60px',
         left: '40px',
         right: '40px',
