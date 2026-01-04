@@ -14,16 +14,15 @@
     </div>
   </div>
 
-  <div class="section-content">
+<div class="section-content">
     <div class="section-title">Nilai Akademik</div>
     <table class="table table-nilai">
       <thead>
         <tr>
           <th style="width: 5%; text-align: center;">No</th>
-          <th style="width: 40%">Mata Pelajaran</th>
-          <th style="width: 15%; text-align: center;">Nilai Akhir</th>
-          <th style="width: 10%; text-align: center;">Predikat</th>
-          <th style="width: 30%">Guru Pengajar</th>
+          <th style="width: 50%">Mata Pelajaran</th>
+          <th style="width: 20%; text-align: center;">Nilai Akhir</th>
+          <th style="width: 25%; text-align: center;">Predikat</th>
         </tr>
       </thead>
       <tbody>
@@ -40,21 +39,22 @@
                 <%= n.nilai_akhir %>
               </td>
               <td style="text-align: center">
-                <% if(n.grade) { %>
-                  <span
-                    class="badge-kategori <%= (n.grade === 'A' || n.grade === 'B') ? 'positif' : (n.grade === 'C' ? 'netral' : 'negatif') %>">
+                <% if(n.grade) { 
+                   let gradeClass = 'grade-c';
+                   if (n.grade === 'A') gradeClass = 'grade-a';
+                   else if (n.grade === 'B') gradeClass = 'grade-b';
+                   else if (n.grade === 'D') gradeClass = 'grade-d';
+                %>
+                  <span class="grade-badge <%= gradeClass %>">
                     <%= n.grade %>
                   </span>
-                  <% } else { %> - <% } %>
-              </td>
-              <td>
-                <%= n.guru_nama || '-' %>
+                <% } else { %> - <% } %>
               </td>
             </tr>
             <% }) %>
               <% } else { %>
                 <tr>
-                  <td colspan="5" class="text-center catatan-empty">Belum ada data nilai.</td>
+                  <td colspan="4" class="text-center catatan-empty">Belum ada data nilai.</td>
                 </tr>
                 <% } %>
       </tbody>
