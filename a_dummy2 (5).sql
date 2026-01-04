@@ -406,19 +406,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nama_lengkap`, `username`, `password`, `must_change_password`, `role`, `status`, `ortu_id`, `last_login`, `created_at`) VALUES
-(1, 'Isma', '00000001', '$2b$10$f8Lln6goTnc3vNgcfFizyumb4OfXfl4hm4LjkRiHc1nJrmVLfd2Cq', 0, 'admin', 'aktif', NULL, '2025-12-16 12:27:42', '2025-09-23 17:12:03'),
-(64, 'Budi Santoso', '1980010112340001', '$2b$10$Ml4INidEZPJdQoDzMgLQYOo1ITnfRyfeJz5ISiEUoA.4Wh.kTpwdO', 0, 'guru', 'aktif', NULL, '2025-12-16 12:24:07', '2025-11-23 04:35:10'),
-(65, 'Siti Nurhaliza', '1981020212340002', '$2b$10$f8Lln6goTnc3vNgcfFizyumb4OfXfl4hm4LjkRiHc1nJrmVLfd2Cq', 1, 'guru', 'aktif', NULL, NULL, '2025-11-23 04:35:10'),
-(66, 'Dewi Anggraini', '1982030312340003', '$2b$10$uxFX8drViwVhCSL9oTJoYOl205Lo5yKQoPxGe4tS8X/lD3vmOxSYe', 0, 'guru', 'aktif', NULL, '2025-12-16 12:24:29', '2025-11-23 04:35:10'),
-(67, 'Eko Nugroho', '1983040412340004', '$2b$10$hzHIVlBsIH3lO/xlpt6AielQn598z3LbObU4EI4844W2Tj5Jdc1rm', 0, 'guru', 'aktif', NULL, '2025-11-28 18:52:59', '2025-11-23 04:35:10'),
-(68, 'Gilang Ramadhan', '1984050512340005', '$2b$10$KyctPv0OFs.K5vGxZ/pgX.XtkC2EMYg233l.LEEJXvuNXDrIJGUM.', 0, 'guru', 'aktif', NULL, '2025-12-12 06:49:06', '2025-11-23 04:35:10'),
-(69, 'Hana Prameswari', '1985060612340006', '$2b$10$f8Lln6goTnc3vNgcfFizyumb4OfXfl4hm4LjkRiHc1nJrmVLfd2Cq', 1, 'guru', 'aktif', NULL, NULL, '2025-11-23 04:35:10'),
-(70, 'Imam Prasetyo', '1986070712340007', '$2b$10$f8Lln6goTnc3vNgcfFizyumb4OfXfl4hm4LjkRiHc1nJrmVLfd2Cq', 1, 'guru', 'aktif', NULL, NULL, '2025-11-23 04:35:10'),
-(71, 'Jasmine Putri', '1987080812340008', '$2b$10$f8Lln6goTnc3vNgcfFizyumb4OfXfl4hm4LjkRiHc1nJrmVLfd2Cq', 1, 'guru', 'aktif', NULL, NULL, '2025-11-23 04:35:10'),
-(72, 'Kurniawan Sari', '1988090912340009', '$2b$10$YoorZcIGekOVCU0caFqZz.ABZSIuM3EXzBq5qygOwN7VmRFIWO/zq', 0, 'guru', 'aktif', NULL, '2025-12-12 06:44:37', '2025-11-23 04:35:10'),
-(74, 'Abdul Malik', '2025100026', '$2b$10$u7mdjvfDX1iz4H3Cc0hd9ePjBFu4Zc7RmWghEPiSLbIIZ9wCNidHi', 0, 'ortu', 'aktif', 26, '2025-12-16 12:22:49', '2025-11-23 05:20:49'),
-(76, 'Ahmad Fauzi', '2025100001', '$2b$10$U89Zodf0161Ek5hzhrXEL.jcNMTaTbi0JTEj/bJxTU6pVyaluWa0u', 0, 'ortu', 'aktif', 1, '2025-12-10 16:53:48', '2025-11-23 08:00:07'),
-(77, 'Bella Kartika', '2025100027', '$2b$10$PwMRQh5xfBDuK12O8RegzeTin5KuRs5WBErHcTeNyggkZDbTmaD9i', 0, 'ortu', 'aktif', 27, '2025-12-16 12:28:09', '2025-11-23 08:05:39');
+(1, 'Isma', '00000001', '$2b$10$f8Lln6goTnc3vNgcfFizyumb4OfXfl4hm4LjkRiHc1nJrmVLfd2Cq', 0, 'admin', 'aktif', NULL, '2025-12-16 12:27:42', '2025-09-23 17:12:03');
 
 --
 -- Indexes for dumped tables
